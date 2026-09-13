@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * PieceMotoOccasion Marketplace : synchronisation automatique du catalogue.
+ */
+
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_insert().
+ */
+function pmo_entity_insert(EntityInterface $entite) {
+  pmo_synchroniser($entite);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function pmo_entity_update(EntityInterface $entite) {
+  pmo_synchroniser($entite);
+}
+
+/**
+ * Envoie la variation modifiee, si le module est configure.
+ */
+function pmo_synchroniser(EntityInterface $entite) {
+  if (!$entite instanceof ProductVariationInterface) {
+    return;
+  }
+  if ((string) \Drupal::config('pmo.reglages')->get('jeton') === '') {
+    return;
+  }
+  \Drupal::service('pmo.catalogue')->envoyer($entite);
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Rattrapage quotidien : une modification faite hors interface (import CSV,
+ * migration) n'emet pas toujours les hooks d'entite.
+ */
+function pmo_cron() {
+  $etat = \Drupal::state();
+  $derniere = (int) $etat->get('pmo.derniere_sync', 0);
+  $maintenant = \Drupal::time()->getRequestTime();
+  if ($maintenant - $derniere < 86400) {
+    return;
+  }
+  if ((string) \Drupal::config('pmo.reglages')->get('jeton') === '') {
+    return;
+  }
+  \Drupal::service('pmo.catalogue')->envoyerTout();
+  $etat->set('pmo.derniere_sync', $maintenant);
+}

@@ -1,0 +1,7 @@
+services:
+  pmo.client:
+    class: Drupal\pmo\Client
+    arguments: ['@http_client', '@config.factory']
+  pmo.catalogue:
+    class: Drupal\pmo\Catalogue
+    arguments: ['@pmo.client', '@entity_type.manager', '@config.factory']

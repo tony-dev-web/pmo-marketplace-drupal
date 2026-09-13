@@ -1,0 +1,13 @@
+pmo.reglages:
+  type: config_object
+  label: 'Reglages PieceMotoOccasion'
+  mapping:
+    jeton:
+      type: string
+      label: 'Jeton API'
+    categorie:
+      type: string
+      label: 'Categorie par defaut'
+    creer_commandes:
+      type: boolean
+      label: 'Creer une commande Drupal Commerce'

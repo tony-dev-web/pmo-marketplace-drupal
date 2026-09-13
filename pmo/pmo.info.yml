@@ -1,0 +1,8 @@
+name: PieceMotoOccasion Marketplace
+type: module
+description: 'Vendez vos pieces moto sur la marketplace PieceMotoOccasion : catalogue et stock synchronises, commandes recues dans Drupal Commerce.'
+package: Commerce
+core_version_requirement: ^10 || ^11
+dependencies:
+  - commerce:commerce_product
+configure: pmo.reglages

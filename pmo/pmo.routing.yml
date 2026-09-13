@@ -1,0 +1,21 @@
+pmo.reglages:
+  path: '/admin/commerce/config/pmo'
+  defaults:
+    _form: '\Drupal\pmo\Form\ReglagesForm'
+    _title: 'PieceMotoOccasion'
+  requirements:
+    _permission: 'administer commerce_product'
+
+pmo.commande:
+  path: '/pmo/commande'
+  defaults:
+    _controller: '\Drupal\pmo\Controller\CommandeController::recevoir'
+  methods: [POST]
+  requirements:
+    # Appel serveur a serveur : aucun utilisateur Drupal. L'acces est
+    # controle par la signature HMAC-SHA256 du corps, verifiee dans le
+    # controleur avec le jeton API.
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+    _csrf_token: FALSE

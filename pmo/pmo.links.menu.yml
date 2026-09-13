@@ -1,0 +1,5 @@
+pmo.reglages:
+  title: 'PieceMotoOccasion'
+  description: 'Jeton API, categorie par defaut, envoi du catalogue.'
+  route_name: pmo.reglages
+  parent: commerce.configuration
